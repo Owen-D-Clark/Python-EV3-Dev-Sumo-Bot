@@ -1,0 +1,107 @@
+#!/usr/bin/env python3 
+
+ 
+
+ 
+
+from ev3dev2.motor import* 
+
+from ev3dev2.sensor import* 
+
+from ev3dev2.sensor.lego import* 
+
+from ev3dev2.sound import* 
+
+from ev3dev2.button import* 
+
+import time 
+
+ 
+
+tank = MoveTank(OUTPUT_A, OUTPUT_D) 
+
+csr = ColorSensor(INPUT_1) 
+
+csl = ColorSensor(INPUT_2) 
+
+us = UltrasonicSensor(INPUT_4) 
+
+sp = Sound() 
+
+speed = 55 
+
+buttons = Button() 
+
+waiting = True 
+
+print("Press center button to continue") 
+
+while waiting: 
+
+    if buttons.enter == True: 
+
+        waiting = False 
+
+time.sleep(5) 
+
+ 
+
+while True: 
+
+    
+
+    cm=us.distance_centimeters 
+
+ 
+
+    if cm <= 17: 
+
+        speed = 100 
+
+ 
+
+    else: 
+
+        speed = 55 
+
+    
+
+ 
+
+    l = csl.reflected_light_intensity 
+
+    
+
+    if l > 20: 
+
+        tank.on_for_rotations(50,50,-1.2) 
+
+        tank.on_for_seconds(50,-50,0.3) 
+
+        
+
+    else: 
+
+        tank.on(speed,speed) 
+
+ 
+
+ 
+
+ 
+
+    r = csr.reflected_light_intensity 
+
+ 
+
+    if r > 20: 
+
+        tank.on_for_rotations(50,50,-1.2) 
+
+        tank.on_for_seconds(-50,50,0.25) 
+
+ 
+
+    else: 
+
+        tank.on(speed,speed) 
